@@ -1,3 +1,5 @@
+<link rel="manifest" href="./lib/manifest.json">
+
 <script lang="ts">
   import Counter from './lib/Counter.svelte'
   import Camera from './lib/Camera.svelte'
