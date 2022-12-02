@@ -1,4 +1,4 @@
-<link rel="manifest" href="./lib/manifest.json">
+<link rel="manifest" href="/manifest.json">
 
 <script lang="ts">
   import Counter from './lib/Counter.svelte'
