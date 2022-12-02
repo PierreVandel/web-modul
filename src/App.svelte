@@ -1,16 +1,11 @@
 <script lang="ts">
   import Counter from './lib/Counter.svelte'
   import Camera from './lib/Camera.svelte'
+  import NFC from './lib/NFC.svelte'
 </script>
 
 <main>
-
-  <h1>Camera</h1>
-
-  <div class="card">
-    <Counter />
-    <Camera />
-  </div>
+  <NFC />
 </main>
 
 <style>
