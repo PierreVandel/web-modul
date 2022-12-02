@@ -1,7 +1,9 @@
 {
+    "name": "Memory Game",
+    "short_name": "Memo",
     "theme_color": "#2196f3",
     "background_color": "#2196f3",
-    "display": "browser",
+    "display": "fullscreen",
     "scope": "/",
     "start_url": "/"
 }
