@@ -5,11 +5,17 @@
   import NFC from './lib/NFC.svelte'
 
   let _data
+
+  function handleSubmit() {
+    alert (`submitted ${_data}`);
+  }
+
 </script>
 
 <main>
   <Camera />
-  <NFC bind:data={_data} />
+
+  <NFC on:submit={handleSubmit}/>
   <script>_data = _data</script>
   {#if _data}
     <h1>resultat : {_data}</h1>
