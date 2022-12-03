@@ -1,11 +1,11 @@
 <script>
     import {createEventDispatcher} from 'svelte';
 
-    let data;
+    export let data = '';
 
     const dispatch = createEventDispatcher();
 
-    const select = num => () => data;
+    const select = num => () => data = num;
     const submit = () =>dispatch('submit');
 
     async function readTag() 
@@ -20,7 +20,7 @@
                 consoleLog("Record type:  " + record.recordType);
                 consoleLog("MIME type:    " + record.mediaType);
                 consoleLog("=== data ===\n" + decoder.decode(record.data));
-                select(decoder.decode(record.data));
+                select(decoder.decode(record.data))
                 }
             }
             } catch(error) {
@@ -54,7 +54,7 @@
 <p>
     <button on:click={readTag}>Test NFC Read</button>
     <button on:click={writeTag}>Test NFC Write</button>
+
     <button disabled={!data} on:click={submit}>submit</button>
-  </p>
-  <pre id="log"></pre>
-  <p><small>Based on the code snippets from <a href="https://w3c.github.io/web-nfc/#examples">specification draft</a>.</small></p>
+
+</p>

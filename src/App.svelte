@@ -15,7 +15,7 @@
 <main>
   <Camera />
 
-  <NFC on:submit={handleSubmit}/>
+  <NFC bind:data={_data} on:submit={handleSubmit}/>
   <script>_data = _data</script>
   {#if _data}
     <h1>resultat : {_data}</h1>
