@@ -1,13 +1,16 @@
-<link rel="manifest" href="/manifest.json">
 
 <script lang="ts">
   import Counter from './lib/Counter.svelte'
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
+
+  let data
 </script>
 
 <main>
-  <NFC />
+  <Camera />
+  <NFC on:data={data} />
+  <h1>resultat : {data}</h1>
 </main>
 
 <style>

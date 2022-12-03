@@ -1,5 +1,13 @@
 <script>
-    async function readTag() {
+    import {createEventDispatcher} from 'svelte'
+
+
+    const dispatch = createEventDispatcher()
+
+    dispatch('data', {})
+
+    async function readTag() 
+    {
         if ("NDEFReader" in window) {
             const ndef = new NDEFReader();
             try {
@@ -10,6 +18,8 @@
                 consoleLog("Record type:  " + record.recordType);
                 consoleLog("MIME type:    " + record.mediaType);
                 consoleLog("=== data ===\n" + decoder.decode(record.data));
+                dispatch('data', decoder.decode(record.data))
+                
                 }
             }
             } catch(error) {
