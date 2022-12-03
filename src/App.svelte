@@ -4,10 +4,10 @@
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
 
-  let _data
+  let _data;
 
   function handleSubmit() {
-    alert (`submitted ${_data}`);
+    alert(`submitted ${_data}`);
   }
 
 </script>
