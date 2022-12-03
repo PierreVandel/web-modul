@@ -20,7 +20,7 @@
                 consoleLog("Record type:  " + record.recordType);
                 consoleLog("MIME type:    " + record.mediaType);
                 consoleLog("=== data ===\n" + decoder.decode(record.data));
-                select(decoder.decode(record.data))
+                select(record.data)
                 }
             }
             } catch(error) {
@@ -55,6 +55,6 @@
     <button on:click={readTag}>Test NFC Read</button>
     <button on:click={writeTag}>Test NFC Write</button>
 
-    <button disabled={!data} on:click={submit}>submit</button>
+    <button on:click={submit}>submit</button>
 
 </p>
