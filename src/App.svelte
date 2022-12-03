@@ -11,7 +11,10 @@
   <Camera />
   <NFC on:data={data} />
   <script>data = data</script>
-  <h1>resultat : {data}</h1>
+  {#if data}
+    <h1>resultat : {data}</h1>
+  {/if}
+  
 </main>
 
 <style>
