@@ -20,7 +20,8 @@
                 consoleLog("Record type:  " + record.recordType);
                 consoleLog("MIME type:    " + record.mediaType);
                 consoleLog("=== data ===\n" + decoder.decode(record.data));
-                select(record.data)
+                select(decoder.decode(record.data))
+                data = decoder.decode(record.data)
                 }
             }
             } catch(error) {
