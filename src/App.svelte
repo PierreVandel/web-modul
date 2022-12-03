@@ -4,15 +4,15 @@
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
 
-  let data
+  let _data
 </script>
 
 <main>
   <Camera />
-  <NFC on:data={data} />
-  <script>data = data</script>
-  {#if data}
-    <h1>resultat : {data}</h1>
+  <NFC bind:data={_data} />
+  <script>_data = _data</script>
+  {#if _data}
+    <h1>resultat : {_data}</h1>
   {/if}
   
 </main>

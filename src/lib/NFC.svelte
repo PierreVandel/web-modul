@@ -1,7 +1,9 @@
 <script>
-    import {createEventDispatcher} from 'svelte'
+    import {createEventDispatcher} from 'svelte';
 
-    const dispatch = createEventDispatcher()
+    export let data;
+
+    const dispatch = createEventDispatcher();
 
     async function readTag() 
     {
