@@ -8,7 +8,7 @@
     const select = num => () => data = num;
     const submit = () =>dispatch('submit');
 
-    function readTag() 
+    async function readTag() 
     {
         if ("NDEFReader" in window) {
             const ndef = new NDEFReader();

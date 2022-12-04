@@ -44,7 +44,7 @@
   
   <script>_data = _data</script>
   -->
-
+  <button on:click={readTag}>Test NFC Read</button>
   {#if _data}
     <h1>resultat : {_data}</h1>
   {/if}
