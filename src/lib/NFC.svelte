@@ -8,7 +8,7 @@
     const select = num => () => data = num;
     const submit = () =>dispatch('submit');
 
-    async function readTag() 
+    function readTag() 
     {
         if ("NDEFReader" in window) {
             const ndef = new NDEFReader();
@@ -20,8 +20,9 @@
                 consoleLog("Record type:  " + record.recordType);
                 consoleLog("MIME type:    " + record.mediaType);
                 consoleLog("=== data ===\n" + decoder.decode(record.data));
-                select(decoder.decode(record.data))
-                data = decoder.decode(record.data)
+                select(decoder.decode(record.data));
+                data = decoder.decode(record.data);
+                console.log(decoder.decode(record.data));
                 }
             }
             } catch(error) {

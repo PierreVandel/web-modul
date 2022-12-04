@@ -10,13 +10,41 @@
     alert(`submitted ${_data}`);
   }
 
+    async function readTag() 
+    {
+        if ("NDEFReader" in window) {
+            const ndef = new NDEFReader();
+            try {
+            await ndef.scan();
+            ndef.onreading = event => {
+                const decoder = new TextDecoder();
+                for (const record of event.message.records) {
+                consoleLog("Record type:  " + record.recordType);
+                consoleLog("MIME type:    " + record.mediaType);
+                consoleLog("=== data ===\n" + decoder.decode(record.data));
+                _data = decoder.decode(record.data);
+                }
+            }
+            } catch(error) {
+                consoleLog(error);
+            }
+        } 
+        else {
+            consoleLog("Web NFC is not supported.");
+        }
+    }
+
 </script>
 
 <main>
   <Camera />
 
-  <NFC bind:data={_data} on:submit={handleSubmit}/>
+  <!--
+    <NFC bind:data={_data} on:submit={handleSubmit}/>
+  
   <script>_data = _data</script>
+  -->
+
   {#if _data}
     <h1>resultat : {_data}</h1>
   {/if}
