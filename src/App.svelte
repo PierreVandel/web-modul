@@ -4,8 +4,9 @@
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
 
-  let data_card_1;
-  let data_card_2;
+  let data_card_1 = null;
+  let data_card_2 = null;
+
 
   async function readTag(data) {
     if ("NDEFReader" in window) {
@@ -33,13 +34,13 @@
 <main>
   <Camera />
 
-  <button on:click={() => readTag("data_card_1")}>First NFC card</button>
+  <button on:click={() => readTag(data_card_1)}>First NFC card</button>
   
   {#if data_card_1}
     <h1>resultat : {data_card_1}</h1>
   {/if}
 
-  <button on:click={() => readTag("data_card_2")}>Second NFC card</button>
+  <button on:click={() => readTag(data_card_2)}>Second NFC card</button>
   
   {#if data_card_2}
     <h1>resultat : {data_card_2}</h1>
