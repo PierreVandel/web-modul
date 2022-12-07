@@ -30,18 +30,22 @@
     }
   }
 
+  function handleReadTag(data_proxy) {
+    data_proxy = readTag(data_proxy)
+  }
+
 </script>
 
 <main>
   <Camera />
 
-  <button on:click={data_card_1 = () => readTag(data_card_1)}>First NFC card</button>
+  <button on:click={() => handleReadTag(data_card_1)}>First NFC card</button>
   
   {#if data_card_1}
     <h1>resultat : {data_card_1}</h1>
   {/if}
 
-  <button on:click={data_card_2 = () => readTag(data_card_2)}>Second NFC card</button>
+  <button on:click={() => handleReadTag(data_card_2)}>Second NFC card</button>
   
   {#if data_card_2}
     <h1>resultat : {data_card_2}</h1>
