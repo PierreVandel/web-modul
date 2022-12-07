@@ -4,8 +4,8 @@
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
 
-  let data_card_1;
-  let data_card_2;
+  let data_card_1 = null;
+  let data_card_2 = null;
 
 
   async function readTag(data) {  
