@@ -18,14 +18,15 @@
             for (const record of event.message.records) {
 
               data = decoder.decode(record.data);
+              return data;
             }
         }
         } catch(error) {
-
+          return null;
         }
     } 
     else {
-
+      return null;
     }
   }
 
@@ -34,13 +35,13 @@
 <main>
   <Camera />
 
-  <button on:click={(data_card_1) => readTag(data_card_1)}>First NFC card</button>
+  <button on:click={() => data_card_1 = readTag(data_card_1)}>First NFC card</button>
   
   {#if data_card_1}
     <h1>resultat : {data_card_1}</h1>
   {/if}
 
-  <button on:click={(data_card_2) => readTag(data_card_2)}>Second NFC card</button>
+  <button on:click={() => data_card_2 = readTag(data_card_2)}>Second NFC card</button>
   
   {#if data_card_2}
     <h1>resultat : {data_card_2}</h1>
