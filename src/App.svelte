@@ -17,7 +17,7 @@
             const decoder = new TextDecoder();
             for (const record of event.message.records) {
 
-            data = decoder.decode(record.data);
+            data_card_1 = decoder.decode(record.data);
             }
         }
         } catch(error) {
