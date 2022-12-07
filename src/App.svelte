@@ -47,10 +47,10 @@
     <h1>resultat : {data_card_2}</h1>
   {/if}
 
-  {#if data_card_1 == null || data_card_2 == null}
+  {#if data_card_1 && data_card_2}
     {#if data_card_1 != data_card_2}
       <h2>The twice cards are differnts, try again...</h2>
-    {:else if data_card_1 === data_card_2}
+    {:else if data_card_1 == data_card_2}
       <h2>You find two same card</h2>
     {/if}
   {:else}
