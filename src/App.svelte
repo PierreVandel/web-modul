@@ -32,6 +32,7 @@
 
   function handleReadTag(data_proxy) {
     data_proxy = readTag(data_proxy)
+    console.log(data_proxy);
   }
 
 </script>
