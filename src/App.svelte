@@ -8,7 +8,7 @@
   let data_card_2;
 
 
-  function readTag1() {  
+  async function readTag1() {  
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
@@ -18,19 +18,23 @@
             for (const record of event.message.records) {
 
               data_card_1 = decoder.decode(record.data);
+              if (data_card_1){
+                break
+              }
 
             }
         }
         } catch(error) {
 
         }
-    } 
+        ndef.cancel()
+    }
     else {
 
     }
   }
 
-  function readTag2() {  
+  async function readTag2() {  
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
@@ -40,12 +44,15 @@
             for (const record of event.message.records) {
 
               data_card_2 = decoder.decode(record.data);
-
+              if (data_card_2){
+                break
+              }
             }
         }
         } catch(error) {
 
         }
+        ndef.cancel()
     } 
     else {
 
