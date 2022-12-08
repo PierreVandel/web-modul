@@ -19,6 +19,7 @@
 
               data_card_1 = decoder.decode(record.data);
               if (data_card_1){
+                ndef.cancel()
                 return
               }
 
@@ -45,6 +46,7 @@
 
               data_card_2 = decoder.decode(record.data);
               if (data_card_2){
+                ndef.cancel()
                 return
               }
             }
