@@ -8,7 +8,7 @@
   let data_card_2;
 
 
-  async function readTag1() {  
+  function readTag1() {  
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
@@ -30,7 +30,7 @@
     }
   }
 
-  async function readTag2() {  
+  function readTag2() {  
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
