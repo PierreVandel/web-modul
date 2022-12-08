@@ -71,13 +71,17 @@
 <main>
   <Camera />
 
+  {#if !data_card_1}
   <button on:click={readTag1}>First NFC card</button>
+  {/if}
   
   {#if data_card_1}
     <h1>resultat : {data_card_1}</h1>
   {/if}
 
+  {#if !data_card_1}
   <button on:click={readTag2}>Second NFC card</button>
+  {/if}
   
   {#if data_card_2}
     <h1>resultat : {data_card_2}</h1>
