@@ -8,7 +8,7 @@
   let data_card_2 = undefined;
 
 
-  async function readTag(data) {  
+  async function readTag1() {  
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
@@ -17,39 +17,58 @@
             const decoder = new TextDecoder();
             for (const record of event.message.records) {
 
-              data = decoder.decode(record.data);
-              return data;
+              data_card_1 = decoder.decode(record.data);
+
             }
         }
         } catch(error) {
-          return undefined;
+
         }
     } 
     else {
-      return undefined;
+
     }
   }
 
-  function handleReadTag1(data_proxy) {
-    data_card_1 = readTag(data_proxy)
+  async function readTag2() {  
+    if ("NDEFReader" in window) {
+        const ndef = new NDEFReader();
+        try {
+        await ndef.scan();
+        ndef.onreading = event => {
+            const decoder = new TextDecoder();
+            for (const record of event.message.records) {
+
+              data_card_2 = decoder.decode(record.data);
+
+            }
+        }
+        } catch(error) {
+
+        }
+    } 
+    else {
+
+    }
   }
 
-  function handleReadTag2(data_proxy) {
-    data_card_1 = readTag(data_proxy)
-  }
+
+  //function handleReadTag1(data_proxy) {
+  //  data_proxy = readTag(data_proxy)
+  //}
 
 </script>
 
 <main>
   <Camera />
 
-  <button on:click={() => handleReadTag1(data_card_1)}>First NFC card</button>
+  <button on:click={() => readTag1}>First NFC card</button>
   
   {#if data_card_1}
     <h1>resultat : {data_card_1}</h1>
   {/if}
 
-  <button on:click={() => handleReadTag2(data_card_2)}>Second NFC card</button>
+  <button on:click={() => readTag2}>Second NFC card</button>
   
   {#if data_card_2}
     <h1>resultat : {data_card_2}</h1>
