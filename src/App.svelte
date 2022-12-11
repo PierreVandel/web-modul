@@ -8,58 +8,37 @@
   let data_card_2;
 
 
-  async function readTag1() {  
-    if ("NDEFReader" in window) {
-        const ndef = new NDEFReader();
-        try {
-        await ndef.scan();
-        ndef.onreading = event => {
-            const decoder = new TextDecoder();
-            for (const record of event.message.records) {
+  async function readTag(tagNumber) {  
+  if ("NDEFReader" in window) {
+      const ndef = new NDEFReader();
+      try {
+      await ndef.scan();
+      ndef.onreading = event => {
+          const decoder = new TextDecoder();
+          for (const record of event.message.records) {
 
+            if (tagNumber === 1) {
               data_card_1 = decoder.decode(record.data);
-              if (data_card_1){
-                ndef.cancel()
-                return
-              }
-
-            }
-        }
-        } catch(error) {
-
-        }
-        ndef.cancel()
-    }
-    else {
-
-    }
-  }
-
-  async function readTag2() {  
-    if ("NDEFReader" in window) {
-        const ndef = new NDEFReader();
-        try {
-        await ndef.scan();
-        ndef.onreading = event => {
-            const decoder = new TextDecoder();
-            for (const record of event.message.records) {
-
+            } else if (tagNumber === 2) {
               data_card_2 = decoder.decode(record.data);
-              if (data_card_2){
-                ndef.cancel()
-                return
-              }
             }
-        }
-        } catch(error) {
 
-        }
-        ndef.cancel()
-    } 
-    else {
+            if (data_card_1 || data_card_2) {
+              ndef.cancel()
+              return
+            }
 
-    }
+          }
+      }
+      } catch(error) {
+
+      }
+      ndef.cancel()
   }
+  else {
+
+  }
+}
 
 
   //function handleReadTag1(data_proxy) {
@@ -71,17 +50,13 @@
 <main>
   <Camera />
 
-  {#if !data_card_1}
-  <button on:click={readTag1}>First NFC card</button>
-  {/if}
+  <button on:click={() => readTag(1)}>First NFC card</button>
   
   {#if data_card_1}
     <h1>resultat : {data_card_1}</h1>
   {/if}
 
-  {#if !data_card_1}
-  <button on:click={readTag2}>Second NFC card</button>
-  {/if}
+  <button on:click={() => readTag(2)}>Second NFC card</button>
   
   {#if data_card_2}
     <h1>resultat : {data_card_2}</h1>
