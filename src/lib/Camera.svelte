@@ -1,4 +1,7 @@
 <script>
+
+    var imageLink;
+
     function getUserMedia(options, successCallback, failureCallback) {
         var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
             navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -55,11 +58,41 @@
             })
             .catch(err => alert('Error: ' + err));
     }
+    function saveImage() {
+    // get the canvas element and its context
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    // draw the image to the canvas
+    var img = document.getElementById('imageTag');
+    context.drawImage(img, 0, 0);
+
+    // get the base64-encoded data URL of the image
+    var dataURL = canvas.toDataURL('image/png');
+
+    // create a temporary link to the image
+    var link = document.createElement('a');
+    link.download = 'image.png';
+    imageLink = link.href = dataURL;
+
+    // simulate a click on the link to trigger the download
+    link.click();
+  }
 </script>
+
+
 
 <p><button on:click={getStream}>Grab video</button></p>
 <p><video autoplay style="height: 180px; width: 240px;"></video></p>
 <p><button on:click={takePhoto}>Take Photo!</button></p>
 <p><img id="imageTag" width="240" height="180"></p>
 
-<p><small>Demo by <a href="http://www.mcasas.tk/" target="_blank" rel="noopener">Miguel Casas-Sanchez</a>.</small></p>
+<!-- create a canvas element to draw the image to -->
+<canvas id="canvas" width="720" height="524"></canvas>
+
+<!-- add a button to save the image -->
+<button on:click={saveImage}>Save Image</button>
+
+{#if imageLink}
+    <h3>{imageLink}</h3>
+{/if}
