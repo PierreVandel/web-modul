@@ -44,7 +44,7 @@ async function writeTag(link) {
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
-        await ndef.write(link);
+        await ndef.write("link");
         consoleLog("NDEF message written!");
         } catch(error) {
             consoleLog(error);
@@ -153,7 +153,7 @@ link.click();
 
   <!------------------->
   <!--Enregistrement de l'url sur les cartes-->
-  <button on:click={() => writeTag(imageLink)}>Test NFC Write</button>
+  <button on:click={() => writeTag(imageLink)}>Write link on NFC</button>
 
   <!--Jeu-->
   <button on:click={() => readTag(1)}>First NFC card</button>
