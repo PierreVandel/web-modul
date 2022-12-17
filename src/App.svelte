@@ -4,6 +4,9 @@
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
 
+  let image_1
+  let image_2
+
   let data_card_1;
   let data_card_2;
 
@@ -60,7 +63,7 @@ async function writeTag(link) {
 
  //////////////////
 
- var imageLink;
+ var imageLink = "test link";
 
 function getUserMedia(options, successCallback, failureCallback) {
     var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -118,7 +121,7 @@ function takePhoto() {
         })
         .catch(err => alert('Error: ' + err));
 }
-function saveImage() {
+function saveImage(tagNumber) {
 // get the canvas element and its context
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
@@ -133,7 +136,14 @@ var dataURL = canvas.toDataURL('image/png');
 // create a temporary link to the image
 var link = document.createElement('a');
 link.download = 'image.png';
+
 imageLink = link.href = dataURL;
+
+if (tagNumber === 1) {
+  image_1 = imageLink;
+} else if (tagNumber === 2) {
+  image_2 = imageLink;
+}
 
 // simulate a click on the link to trigger the download
 link.click();
@@ -151,24 +161,32 @@ link.click();
   <!-- create a canvas element to draw the image to -->
   <canvas id="canvas" width="720" height="524"></canvas>
 
-  <!-- add a button to save the image -->
-  <button on:click={saveImage}>Save Image</button>
+  <!-- add buttons to save the image -->
+  <button on:click={() => saveImage(1)}>Save Image 1</button>
+  {#if image_1}
+    <h3>resultat : {image_1}</h3>
+  {/if}
+
+  <button on:click={() => saveImage(2)}>Save Image 2</button>
+  {#if image_2}
+  <h3>resultat : {image_2}</h3>
+  {/if}
 
   <!------------------->
   <!--Enregistrement de l'url sur les cartes-->
-  <button on:click={() => writeTag(imageLink)}>Write link on NFC</button>
+  <button on:click={() => writeTag("1")}>Write link on NFC</button>
 
   <!--Jeu-->
   <button on:click={() => readTag(1)}>First NFC card</button>
   
   {#if data_card_1}
-    <h1>resultat : {data_card_1}</h1>
+    <h1>resultat : {image_1}</h1>
   {/if}
 
   <button on:click={() => readTag(2)}>Second NFC card</button>
   
   {#if data_card_2}
-    <h1>resultat : {data_card_2}</h1>
+    <h1>resultat : {image_2}</h1>
   {/if}
 
   {#if data_card_1 && data_card_2}
