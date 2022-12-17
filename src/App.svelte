@@ -10,6 +10,9 @@
 
   async function readTag(tagNumber) {  
   if ("NDEFReader" in window) {
+      // Stop the camera stream before accessing the NFC reader
+      theStream.getVideoTracks()[0].stop();
+
       const ndef = new NDEFReader();
       try {
       await ndef.scan();
@@ -42,6 +45,9 @@
 
 async function writeTag(link) {
     if (link && "NDEFReader" in window) {
+        // Stop the camera stream before accessing the NFC reader
+        theStream.getVideoTracks()[0].stop();
+
         const ndef = new NDEFReader();
         try {
             await ndef.write(link);
