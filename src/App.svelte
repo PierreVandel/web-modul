@@ -41,18 +41,18 @@
 }
 
 async function writeTag(link) {
-    if ("NDEFReader" in window) {
+    if (link && "NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
-        await ndef.write("link");
-        consoleLog("NDEF message written!");
+            await ndef.write(link);
+            consoleLog("NDEF message written!");
         } catch(error) {
             consoleLog(error);
         }
     } else {
-        consoleLog("Web NFC is not supported.");
-        }
+        consoleLog("Web NFC is not supported or link is not defined.");
     }
+}
 
 
  //////////////////
