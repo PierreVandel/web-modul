@@ -46,19 +46,12 @@
   }
 }
 
-async function writeTag(link) {
-    if (link && "NDEFReader" in window) {
-        // Stop the camera stream before accessing the NFC reader
-        theStream.getVideoTracks()[0].stop();
-
+async function writeTag(tagNumber) {
+    if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
-            await ndef.write(link);
-        } catch(error) {
-        }
-    } else {
+        await ndef.write(tagNumber);
     }
-}
 
 
  //////////////////
@@ -146,7 +139,7 @@ if (tagNumber === 1) {
 }
 
 // simulate a click on the link to trigger the download
-link.click();
+//link.click();
 }
 
 </script>
