@@ -6,9 +6,17 @@
 
   let image_1
   let image_2
+  let image_3
 
   let data_card_1;
   let data_card_2;
+
+  let is_setup_1 = false;
+  let is_setup_2 = false;
+  let is_setup_3 = false;
+
+  let content_card_1;
+  let content_card_2;
 
 
   async function readTag(tagNumber) {  
@@ -23,9 +31,12 @@
           const decoder = new TextDecoder();
           for (const record of event.message.records) {
 
-            if (tagNumber === 1) {
+            if (tagNumber == 1) {
               data_card_1 = decoder.decode(record.data);
-            } else if (tagNumber === 2) {
+              if (data_card_1 == 1) {
+                
+              }
+            } else if (tagNumber == 2) {
               data_card_2 = decoder.decode(record.data);
             }
 
@@ -47,6 +58,13 @@
 }
 
 async function writeTag(tagNumber) {
+    if (tagNumber == 1) {
+      is_setup_1 = true;
+    } else if (tagNumber == 2) {
+      is_setup_2 = true;
+    } else if (tagNumber == 3) {
+      is_setup_3 = true;
+    }
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         try {
@@ -136,9 +154,11 @@ link.download = 'image.png';
 
 imageLink = link.href = dataURL;
 
-if (tagNumber === 1) {
+if (tagNumber == 1) {
   image_1 = imageLink;
-} else if (tagNumber === 2) {
+} else if (tagNumber == 2) {
+  image_2 = imageLink;
+} else if (tagNumber == 3) {
   image_2 = imageLink;
 }
 
@@ -146,56 +166,85 @@ if (tagNumber === 1) {
 //link.click();
 }
 
+
+//let isSetup_1 = false;
+
+
 </script>
 
 <main>
-  
-  <p><button on:click={getStream}>Grab video</button></p>
-  <p><video autoplay style="height: 180px; width: 240px;"></video></p>
-  <p><button on:click={takePhoto}>Take Photo!</button></p>
-  <p><img id="imageTag" width="240" height="180"></p>
+  {#if !is_setup_1 || !is_setup_2 || !is_setup_3}
+    <p><button on:click={getStream}>Grab video</button></p>
+    <p><video autoplay style="height: 180px; width: 240px;"></video></p>
+    <p><button on:click={takePhoto}>Take Photo!</button></p>
+    <p><img id="imageTag" width="240" height="180"></p>
 
-  <!-- create a canvas element to draw the image to -->
-  <canvas id="canvas" width="720" height="524"></canvas>
+    <!-- create a canvas element to draw the image to -->
+    <canvas id="canvas" width="720" height="524"></canvas>
 
-  <!-- add buttons to save the image -->
-  <button on:click={() => saveImage(1)}>Save Image 1</button>
-  {#if image_1}
-    <h3>resultat : {image_1}</h3>
+    <!-- add buttons to save the image -->
+
+    {#if !is_setup_1}
+      <button on:click={() => saveImage(1)}>Save Image 1</button>
+      {#if image_1}
+        <h3>resultat : {image_1}</h3>
+      {/if}
+      <button on:click={() => writeTag("1")}>Write link on NFC</button>
+    {/if}
+
+
+    {#if is_setup_1 && !is_setup_2}
+      <button on:click={() => saveImage(2)}>Save Image 2</button>
+      {#if image_2}
+        <h3>resultat : {image_2}</h3>
+      {/if}
+      <button on:click={() => writeTag("2")}>Write link on NFC</button>
+    {/if}
+
+
+    {#if is_setup_2 && !is_setup_3}
+      <button on:click={() => saveImage(3)}>Save Image 3</button>
+      {#if image_3}
+        <h3>resultat : {image_3}</h3>
+      {/if}
+      <button on:click={() => writeTag("3")}>Write link on NFC</button>
+    {/if}
   {/if}
-
-  <button on:click={() => saveImage(2)}>Save Image 2</button>
-  {#if image_2}
-  <h3>resultat : {image_2}</h3>
-  {/if}
-
   <!------------------->
-  <!--Enregistrement de l'url sur les cartes-->
-  <button on:click={() => writeTag("1")}>Write link on NFC</button>
+
+  
 
   <!--Jeu-->
-  <button on:click={() => readTag(1)}>First NFC card</button>
-  
-  {#if data_card_1}
-    <h1>resultat : {image_1}</h1>
-  {/if}
 
-  <button on:click={() => readTag(2)}>Second NFC card</button>
-  
-  {#if data_card_2}
-    <h1>resultat : {image_2}</h1>
-  {/if}
+  {#if is_setup_1 && is_setup_2 && is_setup_3}
+    <h1>Nous pouvons jouer !!!</h1>
 
-  {#if data_card_1 && data_card_2}
-    {#if data_card_1 != data_card_2}
-      <h2>The twice cards are differnts, try again...</h2>
-    {:else if data_card_1 == data_card_2}
-      <h2>You find two same card</h2>
+    <button on:click={() => readTag(1)}>First NFC card</button>
+    {#if data_card_1}
+      <h1>resultat : {image_1}</h1>
     {/if}
-  {:else}
-    <h2>Please scan cards</h2>
+    {#if content_card_1}
+      <h1>content_card_1</h1>
+    {/if}
+
+    <button on:click={() => readTag(2)}>Second NFC card</button>
+    {#if data_card_2}
+      <h1>resultat : {image_2}</h1>
+    {/if}
+    {#if content_card_2}
+      <h1>content_card_2</h1>
+    {/if}
+
+    {#if data_card_1 && data_card_2}
+      {#if data_card_1 != data_card_2}
+        <h2>The twice cards are differnts, try again...</h2>
+      {:else if data_card_1 == data_card_2}
+        <h2>You find two same card</h2>
+      {/if}
+    {:else}
+      <h2>Please scan cards</h2>
+    {/if}
   {/if}
- 
   
 </main>
 
