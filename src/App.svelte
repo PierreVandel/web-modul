@@ -15,9 +15,6 @@
   let is_setup_2 = false;
   let is_setup_3 = false;
 
-  let content_card_1;
-  let content_card_2;
-
 
   async function readTag(tagNumber) {  
 
@@ -67,22 +64,25 @@
 }
 
 async function writeTag(tagNumber) {
-    if (tagNumber == 1) {
-      is_setup_1 = true;
-    } else if (tagNumber == 2) {
-      is_setup_2 = true;
-    } else if (tagNumber == 3) {
-      is_setup_3 = true;
-    }
-    if ("NDEFReader" in window) {
-        const ndef = new NDEFReader();
-        try {
-        await ndef.write(tagNumber);
-        } catch(error) {
-        }
-    } else {
-        }
-    }
+  
+  theStream.getVideoTracks()[0].stop();
+
+  if (tagNumber == 1) {
+    is_setup_1 = true;
+  } else if (tagNumber == 2) {
+    is_setup_2 = true;
+  } else if (tagNumber == 3) {
+    is_setup_3 = true;
+  }
+  if ("NDEFReader" in window) {
+      const ndef = new NDEFReader();
+      try {
+      await ndef.write(tagNumber);
+      } catch(error) {
+      }
+  } else {
+      }
+  }
 
 
  //////////////////
@@ -232,17 +232,13 @@ if (tagNumber == 1) {
     {#if data_card_1}
       <img src={image_1} alt="Card one"/>
     {/if}
-    {#if content_card_1}
-      <h1>content_card_1</h1>
-    {/if}
+
 
     <button on:click={() => readTag(2)}>Second NFC card</button>
     {#if data_card_2}
       <img src={image_2} alt="Card two"/>
     {/if}
-    {#if content_card_2}
-      <h1>content_card_2</h1>
-    {/if}
+
 
     {#if data_card_1 && data_card_2}
       {#if data_card_1 != data_card_2}
