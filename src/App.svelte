@@ -230,7 +230,7 @@ if (tagNumber == 1) {
 
     <button on:click={() => readTag(1)}>First NFC card</button>
     {#if data_card_1}
-      <h1>resultat : {image_1}</h1>
+      <img src={image_1} alt="Card one"/>
     {/if}
     {#if content_card_1}
       <h1>content_card_1</h1>
@@ -238,7 +238,7 @@ if (tagNumber == 1) {
 
     <button on:click={() => readTag(2)}>Second NFC card</button>
     {#if data_card_2}
-      <h1>resultat : {image_2}</h1>
+      <img src={image_2} alt="Card two"/>
     {/if}
     {#if content_card_2}
       <h1>content_card_2</h1>
