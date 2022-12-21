@@ -39,48 +39,50 @@
 
       const ndef = new NDEFReader();
       try {
-      await ndef.scan();
-      ndef.onreading = event => {
-          const decoder = new TextDecoder();
-          for (const record of event.message.records) {
+        await ndef.scan();
+        ndef.onreading = event => {
+            const decoder = new TextDecoder();
+            for (const record of event.message.records) {
 
-            if (tagNumber == 1) {
-              data_card_1 = decoder.decode(record.data);
-              if (data_card_1 == "1") {
-                image_corresponding_to_card_1 = image_1;
+              if (tagNumber == 1) {
+                data_card_1 = decoder.decode(record.data);
+                if (data_card_1 == "1") {
+                  image_corresponding_to_card_1 = image_1;
+                }
+                else if (data_card_1 == "2") {
+                  image_corresponding_to_card_1 = image_2;
+                }
+                else if (data_card_1 == "3") {
+                  image_corresponding_to_card_1 = image_3;
+                }
+                else {
+                  image_corresponding_to_card_1 = undefined;
+                }
+                ndef.cancel();
+              } else if (tagNumber == 2) {
+                data_card_2 = decoder.decode(record.data);
+                if (data_card_1 == "1") {
+                  image_corresponding_to_card_2 = image_1;
+                }
+                else if (data_card_1 == "2") {
+                  image_corresponding_to_card_2 = image_2;
+                }
+                else if (data_card_1 == "3") {
+                  image_corresponding_to_card_2 = image_3;
+                }
+                else {
+                  image_corresponding_to_card_2 = undefined;
+                }
+                ndef.cancel();
               }
-              else if (data_card_1 == "2") {
-                image_corresponding_to_card_1 = image_2;
+
+              if (data_card_1 || data_card_2) {
+                ndef.cancel();
+                return;
               }
-              else if (data_card_1 == "3") {
-                image_corresponding_to_card_1 = image_3;
-              }
-              else {
-                image_corresponding_to_card_1 = undefined;
-              }
-            } else if (tagNumber == 2) {
-              data_card_2 = decoder.decode(record.data);
-              if (data_card_1 == "1") {
-                image_corresponding_to_card_2 = image_1;
-              }
-              else if (data_card_1 == "2") {
-                image_corresponding_to_card_2 = image_2;
-              }
-              else if (data_card_1 == "3") {
-                image_corresponding_to_card_2 = image_3;
-              }
-              else {
-                image_corresponding_to_card_2 = undefined;
-              }
+
             }
-
-            if (data_card_1 || data_card_2) {
-              ndef.cancel()
-              return
-            }
-
-          }
-      }
+        }
       } catch(error) {
 
       }
@@ -258,13 +260,21 @@ if (tagNumber == 1) {
 
     <button on:click={() => readTag(1)}>First NFC card</button>
     {#if data_card_1}
-      <img src={image_corresponding_to_card_1} alt="Card one"/>
+      {#if image_corresponding_to_card_1}
+        <img src={image_corresponding_to_card_1} alt="Card one"/>
+      {:else}
+        <h2>There is no image with this tag</h2>
+      {/if}
     {/if}
 
 
     <button on:click={() => readTag(2)}>Second NFC card</button>
     {#if data_card_2}
-      <img src={image_corresponding_to_card_2} alt="Card two"/>
+      {#if image_corresponding_to_card_1}
+        <img src={image_corresponding_to_card_2} alt="Card two"/>
+      {:else}
+        <h2>There is no image with this tag</h2>
+      {/if}
     {/if}
 
 
