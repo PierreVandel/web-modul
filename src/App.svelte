@@ -58,7 +58,6 @@
                 else {
                   image_corresponding_to_card_1 = undefined;
                 }
-                ndef.cancel();
               } else if (tagNumber == 2) {
                 data_card_2 = decoder.decode(record.data);
                 if (data_card_1 == "1") {
@@ -73,9 +72,9 @@
                 else {
                   image_corresponding_to_card_2 = undefined;
                 }
-                ndef.cancel();
+                
               }
-
+              ndef.cancel();
               if (data_card_1 || data_card_2) {
                 ndef.cancel();
                 return;
@@ -83,6 +82,7 @@
 
             }
         }
+        ndef.cancel();
       } catch(error) {
 
       }
