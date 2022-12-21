@@ -4,13 +4,20 @@
   import Camera from './lib/Camera.svelte'
   import NFC from './lib/NFC.svelte'
 
+  // Variables containing image link
   let image_1
   let image_2
   let image_3
 
+  // Variables containing the first scan card data and the second scan card data
   let data_card_1;
   let data_card_2;
 
+  // To display the result (image) after scanning cards
+  let image_corresponding_to_card_1;
+  let image_corresponding_to_card_2;
+
+  // Variables to make sure all cards have been setup 
   let is_setup_1 = false;
   let is_setup_2 = false;
   let is_setup_3 = false;
@@ -39,11 +46,32 @@
 
             if (tagNumber == 1) {
               data_card_1 = decoder.decode(record.data);
-              if (data_card_1 == 1) {
-                
+              if (data_card_1 == "1") {
+                image_corresponding_to_card_1 = image_1;
+              }
+              else if (data_card_1 == "2") {
+                image_corresponding_to_card_1 = image_2;
+              }
+              else if (data_card_1 == "3") {
+                image_corresponding_to_card_1 = image_3;
+              }
+              else {
+                image_corresponding_to_card_1 = undefined;
               }
             } else if (tagNumber == 2) {
               data_card_2 = decoder.decode(record.data);
+              if (data_card_1 == "1") {
+                image_corresponding_to_card_2 = image_1;
+              }
+              else if (data_card_1 == "2") {
+                image_corresponding_to_card_2 = image_2;
+              }
+              else if (data_card_1 == "3") {
+                image_corresponding_to_card_2 = image_3;
+              }
+              else {
+                image_corresponding_to_card_2 = undefined;
+              }
             }
 
             if (data_card_1 || data_card_2) {
@@ -64,7 +92,7 @@
 }
 
 async function writeTag(tagNumber) {
-  
+
   theStream.getVideoTracks()[0].stop();
 
   if (tagNumber == 1) {
@@ -168,7 +196,7 @@ if (tagNumber == 1) {
 } else if (tagNumber == 2) {
   image_2 = imageLink;
 } else if (tagNumber == 3) {
-  image_2 = imageLink;
+  image_3 = imageLink;
 }
 
 // simulate a click on the link to trigger the download
@@ -230,13 +258,13 @@ if (tagNumber == 1) {
 
     <button on:click={() => readTag(1)}>First NFC card</button>
     {#if data_card_1}
-      <img src={image_1} alt="Card one"/>
+      <img src={image_corresponding_to_card_1} alt="Card one"/>
     {/if}
 
 
     <button on:click={() => readTag(2)}>Second NFC card</button>
     {#if data_card_2}
-      <img src={image_2} alt="Card two"/>
+      <img src={image_corresponding_to_card_2} alt="Card two"/>
     {/if}
 
 
