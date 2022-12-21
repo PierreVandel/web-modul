@@ -20,6 +20,15 @@
 
 
   async function readTag(tagNumber) {  
+
+  if(tagNumber == 1) {
+    data_card_1 = undefined;
+  }
+
+  if(tagNumber == 2) {
+    data_card_2 = undefined;
+  }
+  
   if ("NDEFReader" in window) {
       // Stop the camera stream before accessing the NFC reader
       theStream.getVideoTracks()[0].stop();
