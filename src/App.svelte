@@ -45,7 +45,7 @@
 
             if (tagNumber == 1) {
               data_card_1 = decoder.decode(record.data);
-              ndef.cancel();
+
               if (data_card_1 == "1") {
                 image_corresponding_to_card_1 = image_1;
               }
@@ -60,7 +60,7 @@
               }
             } else if (tagNumber == 2) {
               data_card_2 = decoder.decode(record.data);
-              ndef.cancel();
+
               if (data_card_1 == "1") {
                 image_corresponding_to_card_2 = image_1;
               }
@@ -273,7 +273,7 @@ if (tagNumber == 1) {
 
     <button on:click={() => readTag(2)}>Second NFC card</button>
     {#if data_card_2}
-      {#if image_corresponding_to_card_1}
+      {#if image_corresponding_to_card_2}
         <img src={image_corresponding_to_card_2} alt="Card two"/>
       {:else}
         <h2>There is no image with this tag</h2>
