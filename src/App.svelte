@@ -24,94 +24,96 @@
 
 
   async function readTag(tagNumber) {  
+    // Stop the camera stream before accessing the NFC reader
+    theStream.getVideoTracks()[0].stop();
+    if(tagNumber == 1) {
+      data_card_1 = undefined;
+    }
 
-  if(tagNumber == 1) {
-    data_card_1 = undefined;
-  }
+    if(tagNumber == 2) {
+      data_card_2 = undefined;
+    }
 
-  if(tagNumber == 2) {
-    data_card_2 = undefined;
-  }
-  
-  if ("NDEFReader" in window) {
-      // Stop the camera stream before accessing the NFC reader
-      theStream.getVideoTracks()[0].stop();
-
+    if ("NDEFReader" in window) {
+      
       const ndef = new NDEFReader();
       try {
         await ndef.scan();
         ndef.onreading = event => {
-            const decoder = new TextDecoder();
-            for (const record of event.message.records) {
+          const decoder = new TextDecoder();
+          for (const record of event.message.records) {
 
-              if (tagNumber == 1) {
-                data_card_1 = decoder.decode(record.data);
-                if (data_card_1 == "1") {
-                  image_corresponding_to_card_1 = image_1;
-                }
-                else if (data_card_1 == "2") {
-                  image_corresponding_to_card_1 = image_2;
-                }
-                else if (data_card_1 == "3") {
-                  image_corresponding_to_card_1 = image_3;
-                }
-                else {
-                  image_corresponding_to_card_1 = undefined;
-                }
-              } else if (tagNumber == 2) {
-                data_card_2 = decoder.decode(record.data);
-                if (data_card_1 == "1") {
-                  image_corresponding_to_card_2 = image_1;
-                }
-                else if (data_card_1 == "2") {
-                  image_corresponding_to_card_2 = image_2;
-                }
-                else if (data_card_1 == "3") {
-                  image_corresponding_to_card_2 = image_3;
-                }
-                else {
-                  image_corresponding_to_card_2 = undefined;
-                }
-                
-              }
+            if (tagNumber == 1) {
+              data_card_1 = decoder.decode(record.data);
               ndef.cancel();
-              if (data_card_1 || data_card_2) {
-                ndef.cancel();
-                return;
+              if (data_card_1 == "1") {
+                image_corresponding_to_card_1 = image_1;
               }
-
+              else if (data_card_1 == "2") {
+                image_corresponding_to_card_1 = image_2;
+              }
+              else if (data_card_1 == "3") {
+                image_corresponding_to_card_1 = image_3;
+              }
+              else {
+                image_corresponding_to_card_1 = undefined;
+              }
+            } else if (tagNumber == 2) {
+              data_card_2 = decoder.decode(record.data);
+              ndef.cancel();
+              if (data_card_1 == "1") {
+                image_corresponding_to_card_2 = image_1;
+              }
+              else if (data_card_1 == "2") {
+                image_corresponding_to_card_2 = image_2;
+              }
+              else if (data_card_1 == "3") {
+                image_corresponding_to_card_2 = image_3;
+              }
+              else {
+                image_corresponding_to_card_2 = undefined;
+              }
             }
+            ndef.cancel();
+            if (data_card_1 || data_card_2) {
+              ndef.cancel();
+              return;
+            }
+
+          }
         }
         ndef.cancel();
-      } catch(error) {
-
-      }
-      ndef.cancel()
+      } 
+      catch(error) {}
+      ndef.cancel();
+    }
   }
-  else {
 
-  }
-}
+  async function writeTag(tagNumber) {
+    // Stop the camera stream before accessing the NFC reader
+    theStream.getVideoTracks()[0].stop();
 
-async function writeTag(tagNumber) {
 
-  theStream.getVideoTracks()[0].stop();
+    if ("NDEFReader" in window) {
 
-  if (tagNumber == 1) {
-    is_setup_1 = true;
-  } else if (tagNumber == 2) {
-    is_setup_2 = true;
-  } else if (tagNumber == 3) {
-    is_setup_3 = true;
-  }
-  if ("NDEFReader" in window) {
       const ndef = new NDEFReader();
       try {
       await ndef.write(tagNumber);
-      } catch(error) {
-      }
-  } else {
-      }
+      } 
+      catch(error) {}
+    
+      setTimeout(() => {
+        if (tagNumber == 1) {
+          is_setup_1 = true;
+        } else if (tagNumber == 2) {
+          is_setup_2 = true;
+        } else if (tagNumber == 3) {
+          is_setup_3 = true;
+        }
+        ndef.cancel();
+      }, 5000); // Timeout for 5 secondes
+    
+    } else {}
   }
 
 
@@ -175,6 +177,7 @@ function takePhoto() {
         })
         .catch(err => alert('Error: ' + err));
 }
+
 function saveImage(tagNumber) {
 // get the canvas element and its context
 var canvas = document.getElementById('canvas');
@@ -214,9 +217,9 @@ if (tagNumber == 1) {
 <main>
   {#if !is_setup_1 || !is_setup_2 || !is_setup_3}
     <p><button on:click={getStream}>Grab video</button></p>
-    <p><video autoplay style="height: 180px; width: 240px;"></video></p>
+    <p><video autoplay style="height: 720px; width: 524px;"></video></p>
     <p><button on:click={takePhoto}>Take Photo!</button></p>
-    <p><img id="imageTag" width="240" height="180"></p>
+    <p><img id="imageTag" width="720" height="524"></p>
 
     <!-- create a canvas element to draw the image to -->
     <canvas id="canvas" width="720" height="524"></canvas>
