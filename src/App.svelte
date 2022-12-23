@@ -99,6 +99,7 @@
       const ndef = new NDEFReader();
       try {
       await ndef.write(tagNumber);
+      await ndef.write(tagNumber);
       } 
       catch(error) {}
     
