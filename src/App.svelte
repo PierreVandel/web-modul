@@ -22,6 +22,8 @@
   let is_setup_2 = false;
   let is_setup_3 = false;
 
+  let waiting_write_tag = false;
+
 
   async function readTag(tagNumber) {  
     // Stop the camera stream before accessing the NFC reader
@@ -102,8 +104,9 @@
       await ndef.write(tagNumber);
       } 
       catch(error) {}
-    
+      waiting_write_tag = true
       setTimeout(() => {
+        
         if (tagNumber == 1) {
           is_setup_1 = true;
         } else if (tagNumber == 2) {
@@ -112,7 +115,8 @@
           is_setup_3 = true;
         }
         ndef.cancel();
-      }, 5000); // Timeout for 5 secondes
+        waiting_write_tag = false
+      }, 10000); // Timeout for 10 secondes
     
     } else {}
   }
@@ -180,33 +184,33 @@ function takePhoto() {
 }
 
 function saveImage(tagNumber) {
-// get the canvas element and its context
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d');
+  // get the canvas element and its context
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
 
-// draw the image to the canvas
-var img = document.getElementById('imageTag');
-context.drawImage(img, 0, 0);
+  // draw the image to the canvas
+  var img = document.getElementById('imageTag');
+  context.drawImage(img, 0, 0);
 
-// get the base64-encoded data URL of the image
-var dataURL = canvas.toDataURL('image/png');
+  // get the base64-encoded data URL of the image
+  var dataURL = canvas.toDataURL('image/png');
 
-// create a temporary link to the image
-var link = document.createElement('a');
-link.download = 'image.png';
+  // create a temporary link to the image
+  var link = document.createElement('a');
+  link.download = 'image.png';
 
-imageLink = link.href = dataURL;
+  imageLink = link.href = dataURL;
 
-if (tagNumber == 1) {
-  image_1 = imageLink;
-} else if (tagNumber == 2) {
-  image_2 = imageLink;
-} else if (tagNumber == 3) {
-  image_3 = imageLink;
-}
+  if (tagNumber == 1) {
+    image_1 = imageLink;
+  } else if (tagNumber == 2) {
+    image_2 = imageLink;
+  } else if (tagNumber == 3) {
+    image_3 = imageLink;
+  }
 
-// simulate a click on the link to trigger the download
-//link.click();
+  // simulate a click on the link to trigger the download
+  //link.click();
 }
 
 
@@ -217,40 +221,35 @@ if (tagNumber == 1) {
 
 <main>
   {#if !is_setup_1 || !is_setup_2 || !is_setup_3}
-    <p><button on:click={getStream}>Grab video</button></p>
-    <p><video autoplay style="height: 720px; width: 524px;"></video></p>
-    <p><button on:click={takePhoto}>Take Photo!</button></p>
-    <p><img id="imageTag" width="720" height="524"></p>
+    {#if !waiting_write_tag}
+      <p><button on:click={getStream}>Grab video</button></p>
+      <p><video autoplay style="height: 720px; width: 524px;"></video></p>
+      <p><button on:click={takePhoto}>Take Photo!</button></p>
+      <p><img id="imageTag" width="720" height="524"></p>
 
-    <!-- create a canvas element to draw the image to -->
-    <canvas id="canvas" width="720" height="524"></canvas>
+      <!-- create a canvas element to draw the image to -->
+      <canvas id="canvas" width="720" height="524"></canvas>
 
-    <!-- add buttons to save the image -->
+      <!-- add buttons to save the image -->
 
-    {#if !is_setup_1}
-      <button on:click={() => saveImage(1)}>Save Image 1</button>
-      {#if image_1}
-        <h3>resultat : {image_1}</h3>
+      {#if !is_setup_1}
+        <button on:click={() => saveImage(1)}>Save Image 1</button>
+        <button on:click={() => writeTag("1")}>Write link on NFC</button>
       {/if}
-      <button on:click={() => writeTag("1")}>Write link on NFC</button>
-    {/if}
 
 
-    {#if is_setup_1 && !is_setup_2}
-      <button on:click={() => saveImage(2)}>Save Image 2</button>
-      {#if image_2}
-        <h3>resultat : {image_2}</h3>
+      {#if is_setup_1 && !is_setup_2}
+        <button on:click={() => saveImage(2)}>Save Image 2</button>
+        <button on:click={() => writeTag("2")}>Write link on NFC</button>
       {/if}
-      <button on:click={() => writeTag("2")}>Write link on NFC</button>
-    {/if}
 
 
-    {#if is_setup_2 && !is_setup_3}
-      <button on:click={() => saveImage(3)}>Save Image 3</button>
-      {#if image_3}
-        <h3>resultat : {image_3}</h3>
+      {#if is_setup_2 && !is_setup_3}
+        <button on:click={() => saveImage(3)}>Save Image 3</button>
+        <button on:click={() => writeTag("3")}>Write link on NFC</button>
       {/if}
-      <button on:click={() => writeTag("3")}>Write link on NFC</button>
+    {:else}
+      <h1>You have 10 secondes to scan two NFC cards...</h1>
     {/if}
   {/if}
   <!------------------->
