@@ -97,14 +97,14 @@
 
 
     if ("NDEFReader" in window) {
-
+      waiting_write_tag = true
       const ndef = new NDEFReader();
       try {
       await ndef.write(tagNumber);
       await ndef.write(tagNumber);
       } 
       catch(error) {}
-      waiting_write_tag = true
+      
       setTimeout(() => {
         
         if (tagNumber == 1) {
