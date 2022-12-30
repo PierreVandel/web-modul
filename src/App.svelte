@@ -97,7 +97,7 @@
 
 
     if ("NDEFReader" in window) {
-      
+      waiting_write_tag = true;
       const ndef = new NDEFReader();
       try {
       await ndef.write(tagNumber);
@@ -105,19 +105,17 @@
       } 
       catch(error) {}
       
-      setTimeout(() => {
-        
-        if (tagNumber == 1) {
-          is_setup_1 = true;
-        } else if (tagNumber == 2) {
-          is_setup_2 = true;
-        } else if (tagNumber == 3) {
-          is_setup_3 = true;
-        }
+      waiting_write_tag = false;
+      if (tagNumber == 1) {
+        is_setup_1 = true;
+      } else if (tagNumber == 2) {
+        is_setup_2 = true;
+      } else if (tagNumber == 3) {
+        is_setup_3 = true;
+      }
+      ndef.cancel();
+      
 
-        ndef.cancel();
-        
-      }, 10000); // Timeout for 10 secondes
 
     
     } else {}
