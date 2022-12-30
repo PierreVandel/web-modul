@@ -106,7 +106,7 @@
       catch(error) {}
       
       setTimeout(() => {
-        waiting_write_tag = false;
+        
         if (tagNumber == 1) {
           is_setup_1 = true;
         } else if (tagNumber == 2) {
@@ -117,9 +117,10 @@
         ndef.cancel();
         
       }, 10000); // Timeout for 10 secondes
+      waiting_write_tag = false;
     
     } else {}
-    waiting_write_tag = waiting_write_tag;
+
   }
 
 
