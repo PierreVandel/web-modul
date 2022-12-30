@@ -97,7 +97,7 @@
 
 
     if ("NDEFReader" in window) {
-      waiting_write_tag = true;
+      
       const ndef = new NDEFReader();
       try {
       await ndef.write(tagNumber);
@@ -114,10 +114,11 @@
         } else if (tagNumber == 3) {
           is_setup_3 = true;
         }
+
         ndef.cancel();
         
       }, 10000); // Timeout for 10 secondes
-      waiting_write_tag = false;
+
     
     } else {}
 
