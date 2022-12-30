@@ -100,8 +100,10 @@
       waiting_write_tag = true;
       const ndef = new NDEFReader();
       try {
-      await ndef.write(tagNumber);
-      await ndef.write(tagNumber);
+      for(let i = 0; i < 2; i++) {
+        await ndef.write(tagNumber);
+      }
+      
       } 
       catch(error) {}
       
@@ -250,7 +252,7 @@ function saveImage(tagNumber) {
         <button on:click={() => writeTag("3")}>Write link on NFC</button>
       {/if}
     {:else}
-      <h1>You have 10 secondes to scan two NFC cards...</h1>
+      <h1>Please scan two NFC cards...</h1>
     {/if}
   {/if}
   <!------------------->
