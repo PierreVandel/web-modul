@@ -284,7 +284,7 @@ function saveImage(tagNumber) {
     {/if}
 
 
-    {#if data_card_1 && data_card_2}
+    {#if data_card_1 != 'undefined' && data_card_2 != 'undefined'}
       {#if data_card_1 != data_card_2}
         <h2>The twice cards are differnts, try again...</h2>
       {:else if data_card_1 == data_card_2}
