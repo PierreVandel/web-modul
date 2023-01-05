@@ -10,8 +10,8 @@
   let image_3
 
   // Variables containing the first scan card data and the second scan card data
-  let data_card_1;
-  let data_card_2;
+  let data_card_1 = undefined;
+  let data_card_2= undefined;
 
   // To display the result (image) after scanning cards
   let image_corresponding_to_card_1;
@@ -116,18 +116,12 @@
         is_setup_3 = true;
       }
       ndef.cancel();
-      
-
-
-    
     } else {}
 
   }
 
 
- //////////////////
-
- var imageLink = "test link";
+ //var imageLink = "test link";
 
 function getUserMedia(options, successCallback, failureCallback) {
     var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -284,7 +278,7 @@ function saveImage(tagNumber) {
     {/if}
 
 
-    {#if data_card_1 != 'undefined' && data_card_2 != 'undefined'}
+    {#if data_card_1 != undefined && data_card_2 != undefined}
       {#if data_card_1 != data_card_2}
         <h2>The twice cards are differnts, try again...</h2>
       {:else if data_card_1 == data_card_2}
