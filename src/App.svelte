@@ -116,12 +116,18 @@
         is_setup_3 = true;
       }
       ndef.cancel();
+      
+
+
+    
     } else {}
 
   }
 
 
- //var imageLink = "test link";
+ //////////////////
+
+ var imageLink = "test link";
 
 function getUserMedia(options, successCallback, failureCallback) {
     var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -260,13 +266,21 @@ function saveImage(tagNumber) {
 
     <button on:click={() => readTag(1)}>First NFC card</button>
     {#if data_card_1}
-      <img src={image_corresponding_to_card_1} alt="Card one"/>
+      {#if image_corresponding_to_card_1}
+        <img src={image_corresponding_to_card_1} alt="Card one"/>
+      {:else}
+        <h2>There is no image with this tag</h2>
+      {/if}
     {/if}
 
 
     <button on:click={() => readTag(2)}>Second NFC card</button>
     {#if data_card_2}
-      <img src={image_corresponding_to_card_2} alt="Card two"/>
+      {#if image_corresponding_to_card_2}
+        <img src={image_corresponding_to_card_2} alt="Card two"/>
+      {:else}
+        <h2>There is no image with this tag</h2>
+      {/if}
     {/if}
 
 
