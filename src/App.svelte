@@ -33,7 +33,7 @@
     }
 
     if(tagNumber == 2) {
-      data_card_2 = null;
+      np = null;
     }
 
     if ("NDEFReader" in window) {
@@ -298,6 +298,11 @@ function saveImage(tagNumber) {
 </main>
 
 <style>
+
+  button {
+    display:block;
+  }
+
   .logo {
     height: 6em;
     padding: 1.5em;
