@@ -225,10 +225,10 @@ function saveImage(tagNumber) {
 <main>
   {#if !is_setup_1 || !is_setup_2 || !is_setup_3}
     {#if !waiting_write_tag}
-      <p><button on:click={getStream}>Grab video</button></p>
-      <p><video autoplay style="height: 720px; width: 524px;"></video></p>
-      <p><button on:click={takePhoto}>Take Photo!</button></p>
-      <p><img id="imageTag" width="720" height="524"></p>
+      <button on:click={getStream}>Grab video</button>
+      <video autoplay style="height: 720px; width: 524px;"></video>
+      <button on:click={takePhoto}>Take Photo!</button>
+      <img id="imageTag" width="720" height="524">
 
       <!-- create a canvas element to draw the image to -->
       <canvas id="canvas" width="720" height="524"></canvas>
@@ -298,22 +298,22 @@ function saveImage(tagNumber) {
 </main>
 
 <style>
-
   button {
-    display:block;
+    width:100%;
   }
 
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
+  video {
+    width:100%;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+  img {
+    width:100%;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
+
+  canvas {
+    width:100%;
   }
+
   .read-the-docs {
     color: #888;
   }
