@@ -117,9 +117,6 @@
       }
       ndef.cancel();
       
-
-
-    
     } else {}
 
   }
@@ -234,6 +231,7 @@ function saveImage(tagNumber) {
       <canvas id="canvas" width="720" height="524"></canvas>
 
       <!-- add buttons to save the image -->
+      
 
       {#if !is_setup_1}
         <button on:click={() => saveImage(1)}>Save Image 1</button>
@@ -315,6 +313,6 @@ function saveImage(tagNumber) {
   }
 
   .read-the-docs {
-    color: #888;
+    color: rgb(150, 150, 150);
   }
 </style>
