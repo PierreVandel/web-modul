@@ -10,8 +10,8 @@
   let image_3
 
   // Variables containing the first scan card data and the second scan card data
-  let data_card_1 = null;
-  let data_card_2= null;
+  let data_card_1;
+  let data_card_2;
 
   // To display the result (image) after scanning cards
   let image_corresponding_to_card_1;
@@ -278,7 +278,7 @@ function saveImage(tagNumber) {
     {/if}
 
 
-    {#if data_card_1 != null && data_card_2 != null}
+    {#if data_card_1 != 'undefined' && data_card_2 != 'undefined'}
       {#if data_card_1 != data_card_2}
         <h2>The twice cards are differnts, try again...</h2>
       {:else if data_card_1 == data_card_2}
