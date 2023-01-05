@@ -223,12 +223,12 @@ function saveImage(tagNumber) {
   {#if !is_setup_1 || !is_setup_2 || !is_setup_3}
     {#if !waiting_write_tag}
       <button on:click={getStream}>Grab video</button>
-      <video autoplay style="height: 720px; width: 524px;"></video>
+      <video autoplay ></video>
       <button on:click={takePhoto}>Take Photo!</button>
-      <img id="imageTag" width="720" height="524">
+      <img id="imageTag">
 
       <!-- create a canvas element to draw the image to -->
-      <canvas id="canvas" width="720" height="524"></canvas>
+      <canvas id="canvas"></canvas>
 
       <!-- add buttons to save the image -->
       
