@@ -1,4 +1,3 @@
-
 <script lang="ts">
 
   // Variables containing image link
@@ -21,7 +20,7 @@
 
   let waiting_write_tag = false;
   
-
+  
   async function readTag(tagNumber) {
     // Stop the camera stream before accessing the NFC reader
     theStream.getVideoTracks()[0].stop();
@@ -92,11 +91,12 @@
     // Stop the camera stream before accessing the NFC reader
     theStream.getVideoTracks()[0].stop();
 
-
+    // Check if the NDEFReader API is available
     if ("NDEFReader" in window) {
       waiting_write_tag = true;
       const ndef = new NDEFReader();
       try {
+        //Write the 2 cards with the tag
       for(let i = 0; i < 2; i++) {
         await ndef.write(tagNumber);
       }
@@ -113,68 +113,77 @@
       } else if (tagNumber == 3) {
         is_setup_3 = true;
       }
+      // Cancel the NFC reading process
       ndef.cancel();
       
+    // If the NDEFReader API is not available, do nothing
     } else {}
 
   }
 
-
+// Function to get the user's media (in this case, video)
 function getUserMedia(options, successCallback, failureCallback) {
-    var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia || navigator.msGetUserMedia;
-    if (api) {
-        return api.bind(navigator)(options, successCallback, failureCallback);
-    }
+  // Check for various vendor prefixes of the getUserMedia function
+  var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  // If the getUserMedia function is available, bind it to the navigator object and call it with the specified arguments
+  if (api) {
+    return api.bind(navigator)(options, successCallback, failureCallback);
+  }
 }
 
 var theStream;
-
+// Function to start getting the video stream
 function getStream() {
-    if (!navigator.getUserMedia && !navigator.webkitGetUserMedia &&
-        !navigator.mozGetUserMedia && !navigator.msGetUserMedia) {
-        alert('User Media API not supported.');
-        return;
-    }
-    
-    var constraints = {
-        video: true
-    };
+  // Check if the getUserMedia function is not available
+  if (!navigator.getUserMedia && !navigator.webkitGetUserMedia &&
+    !navigator.mozGetUserMedia && !navigator.msGetUserMedia) {
+    alert('User Media API not supported.');
+    return;
+  }
+  
+  // Set the video constraint to true
+  var constraints = {
+    video: true
+  };
 
-    getUserMedia(constraints, function (stream) {
-        var mediaControl = document.querySelector('video');
-        if ('srcObject' in mediaControl) {
-            mediaControl.srcObject = stream;
-        } else if (navigator.mozGetUserMedia) {
-            mediaControl.mozSrcObject = stream;
-        } else {
-            mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
-        }
-        theStream = stream;
-    }, function (err) {
-        alert('Error: ' + err);
-    });
+  // Call the getUserMedia function with the video constraint and specified callback functions
+  getUserMedia(constraints, function (stream) {
+    // Get the video element and set its source object to the stream
+    var mediaControl = document.querySelector('video');
+    if ('srcObject' in mediaControl) {
+        mediaControl.srcObject = stream;
+    // For older versions of Firefox, set the mozSrcObject property of the video element
+    } else if (navigator.mozGetUserMedia) {
+        mediaControl.mozSrcObject = stream;
+    } else {
+        mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+    }
+    theStream = stream;
+  }, function (err) {
+    alert('Error: ' + err);
+  });
 }
 
 function takePhoto() {
-    if (!('ImageCapture' in window)) {
-        alert('ImageCapture is not available');
-        return;
-    }
+  if (!('ImageCapture' in window)) {
+    alert('ImageCapture is not available');
+    return;
+  }
+  
+  if (!theStream) {
+    alert('Grab the video stream first!');
+    return;
+  }
     
-    if (!theStream) {
-        alert('Grab the video stream first!');
-        return;
-    }
-    
-    var theImageCapturer = new ImageCapture(theStream.getVideoTracks()[0]);
+  var theImageCapturer = new ImageCapture(theStream.getVideoTracks()[0]);
 
-    theImageCapturer.takePhoto()
-        .then(blob => {
-            var theImageTag = document.getElementById("imageTag");
-            theImageTag.src = URL.createObjectURL(blob);
-        })
-        .catch(err => alert('Error: ' + err));
+  theImageCapturer.takePhoto()
+    .then(blob => {
+      var theImageTag = document.getElementById("imageTag");
+      theImageTag.src = URL.createObjectURL(blob);
+    })
+    .catch(err => alert('Error: ' + err));
 }
 
 function saveImage(tagNumber) {
