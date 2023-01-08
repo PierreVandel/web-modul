@@ -193,6 +193,8 @@ function saveImage(tagNumber) {
   var link = document.createElement('a');
   link.download = 'image.png';
 
+  let imageLink
+
   imageLink = link.href = dataURL;
 
   if (tagNumber == 1) {
@@ -222,19 +224,19 @@ function saveImage(tagNumber) {
 
       {#if !is_setup_1}
         <button on:click={() => saveImage(1)}>Save Image 1</button>
-        <button on:click={() => writeTag("1")}>Write link on NFC</button>
+        <button on:click={() => writeTag("1")}>Write tag to link the photo</button>
       {/if}
 
 
       {#if is_setup_1 && !is_setup_2}
         <button on:click={() => saveImage(2)}>Save Image 2</button>
-        <button on:click={() => writeTag("2")}>Write link on NFC</button>
+        <button on:click={() => writeTag("2")}>Write tag to link the photo</button>
       {/if}
 
 
       {#if is_setup_2 && !is_setup_3}
         <button on:click={() => saveImage(3)}>Save Image 3</button>
-        <button on:click={() => writeTag("3")}>Write link on NFC</button>
+        <button on:click={() => writeTag("3")}>Write tag to link the photo</button>
       {/if}
     {:else}
       <h1>Please scan two NFC cards...</h1>
@@ -245,7 +247,7 @@ function saveImage(tagNumber) {
   <!--Jeu-->
 
   {#if is_setup_1 && is_setup_2 && is_setup_3}
-    <h1>Nous pouvons jouer !!!</h1>
+    <h1>We can play !</h1>
 
     <button on:click={() => readTag(1)}>First NFC card</button>
     {#if data_card_1}
@@ -269,7 +271,7 @@ function saveImage(tagNumber) {
 
     {#if data_card_1 && data_card_2}
       {#if data_card_1 != data_card_2}
-        <h2>The twice cards are differnts, try again...</h2>
+        <h2>The twice cards are differents, try again...</h2>
       {:else if data_card_1 == data_card_2}
         <h2>You find two same card</h2>
       {/if}
