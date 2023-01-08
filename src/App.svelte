@@ -33,7 +33,7 @@
     }
 
     if(tagNumber == 2) {
-      np = null;
+      data_card_2 = null;
     }
 
     if ("NDEFReader" in window) {
