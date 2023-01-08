@@ -1,8 +1,5 @@
 
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
-  import Camera from './lib/Camera.svelte'
-  import NFC from './lib/NFC.svelte'
 
   // Variables containing image link
   let image_1
@@ -10,8 +7,8 @@
   let image_3
 
   // Variables containing the first scan card data and the second scan card data
-  let data_card_1 = null;
-  let data_card_2 = null;
+  let data_card_1;
+  let data_card_2;
 
   // To display the result (image) after scanning cards
   let image_corresponding_to_card_1;
@@ -23,17 +20,17 @@
   let is_setup_3 = false;
 
   let waiting_write_tag = false;
+  
 
-
-  async function readTag(tagNumber) {  
+  async function readTag(tagNumber) {
     // Stop the camera stream before accessing the NFC reader
     theStream.getVideoTracks()[0].stop();
     if(tagNumber == 1) {
-      data_card_1 = null;
+      data_card_1 = undefined;
     }
 
     if(tagNumber == 2) {
-      data_card_2 = null;
+      data_card_2 = undefined;
     }
 
     if ("NDEFReader" in window) {
@@ -106,7 +103,8 @@
       
       } 
       catch(error) {}
-      
+
+      // Update the corresponding flag for the written tag
       waiting_write_tag = false;
       if (tagNumber == 1) {
         is_setup_1 = true;
@@ -121,10 +119,6 @@
 
   }
 
-
- //////////////////
-
- var imageLink = "test link";
 
 function getUserMedia(options, successCallback, failureCallback) {
     var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -208,14 +202,7 @@ function saveImage(tagNumber) {
   } else if (tagNumber == 3) {
     image_3 = imageLink;
   }
-
-  // simulate a click on the link to trigger the download
-  //link.click();
 }
-
-
-//let isSetup_1 = false;
-
 
 </script>
 
@@ -253,8 +240,6 @@ function saveImage(tagNumber) {
       <h1>Please scan two NFC cards...</h1>
     {/if}
   {/if}
-  <!------------------->
-
   
 
   <!--Jeu-->
@@ -282,7 +267,7 @@ function saveImage(tagNumber) {
     {/if}
 
 
-    {#if data_card_1 != null && data_card_2 != null}
+    {#if data_card_1 && data_card_2}
       {#if data_card_1 != data_card_2}
         <h2>The twice cards are differnts, try again...</h2>
       {:else if data_card_1 == data_card_2}
